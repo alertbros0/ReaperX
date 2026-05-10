@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ module.title }} - ReaperX{% endblock %}
+{% block heading %}{{ module.title }}{% endblock %}
+{% block heading_meta %}{{ module.blurb }}{% endblock %}
+
+{% block content %}
+<form id="module-form"
+      class="module-form"
+      data-endpoint="{{ url_for('api_' + key) }}"
+      enctype="multipart/form-data"
+      autocomplete="off">
+  <label class="field">
+    <span>{{ module.form_field.label }}</span>
+    {% if module.form_field.type == 'file' %}
+      <input type="file" name="{{ module.form_field.name }}" accept="image/*" required />
+    {% else %}
+      <input type="text"
+             name="{{ module.form_field.name }}"
+             placeholder="{{ module.form_field.placeholder }}"
+             required />
+    {% endif %}
+  </label>
+  {% if key == 'phone' %}
+    <label class="field small">
+      <span>Default region (optional)</span>
+      <input type="text" name="region" maxlength="2" placeholder="US" />
+    </label>
+  {% endif %}
+  {% if key == 'ssl' %}
+    <label class="field small">
+      <span>Port</span>
+      <input type="number" name="port" value="443" min="1" max="65535" />
+    </label>
+  {% endif %}
+  <button type="submit" class="btn-primary">Run</button>
+</form>
+
+<div id="module-result" class="result hidden">
+  <div class="result-toolbar">
+    <span class="status-badge" id="status-badge">idle</span>
+    <button type="button" id="copy-json" class="btn-ghost">Copy JSON</button>
+    <button type="button" id="download-json" class="btn-ghost">Download .json</button>
+  </div>
+  <div id="result-pretty" class="result-pretty"></div>
+  <details class="raw-json">
+    <summary>Raw JSON</summary>
+    <pre id="result-raw"></pre>
+  </details>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.REAPERX_MODULE_KEY = "{{ key }}";
+</script>
+{% endblock %}
