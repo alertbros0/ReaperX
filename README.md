@@ -3,20 +3,47 @@
 > An OSINT toolkit with a polished web interface — built for investigators,
 > journalists, and security researchers.
 
-ReaperX exposes a focused set of OSINT pivots through a single Flask web app:
+ReaperX exposes 16 OSINT pivots across 6 categories through a single Flask web app:
 
+### Identity
 | Module | What it does |
 | --- | --- |
-| **Username Search** | Checks 25+ public social/dev platforms in parallel. |
-| **Domain WHOIS & DNS** | Registrar, dates, name servers + A / AAAA / MX / NS / TXT / CNAME / SOA records. |
-| **IP Intelligence** | Geolocation, ASN, organisation, reverse DNS via the keyless `ip-api.com` endpoint. |
-| **Email Recon** | Validation, MX-record check, Gravatar lookup, optional Have-I-Been-Pwned breach check. |
+| **Username Search** | Checks 60+ public social/dev platforms in parallel. |
+| **GitHub Recon** | Public profile, top repos, stars/forks, languages, social links. |
+| **Reddit Recon** | Public profile, karma, recent posts and comments. |
+| **Email Recon** | Validation, MX-record check, Gravatar lookup, optional HIBP breach check. |
 | **Phone Number** | Country, region, carrier, timezones via `phonenumbers` (offline). |
-| **Image EXIF** | Camera, software, and GPS metadata extraction (with map link). |
+
+### Domain & DNS
+| Module | What it does |
+| --- | --- |
+| **Domain WHOIS & DNS** | Registrar, dates, name servers + A / AAAA / MX / NS / TXT / CNAME / SOA records. |
 | **Subdomain Discovery** | Passive enumeration via the [crt.sh](https://crt.sh) certificate-transparency log. |
-| **Wayback Machine** | Historical snapshots from the Internet Archive's CDX API. |
+| **DNS over HTTPS** | Multi-resolver DoH lookups (Cloudflare 1.1.1.1, Google 8.8.8.8, Quad9). |
 | **SSL Certificate** | Subject/issuer, validity, SANs, signature algo for any TLS host. |
+
+### Network
+| Module | What it does |
+| --- | --- |
+| **IP Intelligence** | Geolocation, ASN, reverse DNS, and an interactive OpenStreetMap embed. |
+| **MAC Vendor** | OUI to vendor lookup via the keyless [maclookup.app](https://maclookup.app) API. |
+
+### Web Archive
+| Module | What it does |
+| --- | --- |
+| **Wayback Machine** | Historical snapshots from the Internet Archive's CDX API. |
+
+### Files
+| Module | What it does |
+| --- | --- |
+| **Image EXIF** | Camera, software, and GPS metadata extraction (with map link). |
+| **Reverse Image Search** | Generates Google Lens / TinEye / Yandex / Bing / SauceNAO / IQDB / Karma Decay search links. |
+
+### Search
+| Module | What it does |
+| --- | --- |
 | **Search Dorks** | Generates Google / Bing / DuckDuckGo OSINT pivots. |
+| **Threat Intel** | urlscan.io history + verification links to VirusTotal, AbuseIPDB, URLhaus, Shodan, Censys, etc. |
 
 > **Scope.** ReaperX only consumes **publicly available** information. It does
 > not log into anything, bypass paywalls, harvest credentials, or perform any
