@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}ReaperX - OSINT toolkit{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='52' font-size='52'>%F0%9F%92%80</text></svg>" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a href="{{ url_for('index') }}" class="brand">
+        <span class="brand-mark">RX</span>
+        <span class="brand-text">
+          <strong>ReaperX</strong>
+          <small>v{{ app_version }}</small>
+        </span>
+      </a>
+      <nav class="modules-nav">
+        {% for key, m in modules.items() %}
+          <a href="{{ url_for('module_page', key=key) }}"
+             class="module-link {% if request.view_args and request.view_args.get('key') == key %}active{% endif %}">
+            <span class="dot"></span>
+            <span>{{ m.title }}</span>
+          </a>
+        {% endfor %}
+      </nav>
+      <footer class="sidebar-footer">
+        <a href="https://github.com/alertbros0/ReaperX" target="_blank" rel="noopener">GitHub</a>
+        <span>·</span>
+        <a href="{{ url_for('healthz') }}">status</a>
+      </footer>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <h1 class="topbar-title">{% block heading %}{% endblock %}</h1>
+        <div class="topbar-meta">{% block heading_meta %}{% endblock %}</div>
+      </header>
+      <section class="content">
+        {% block content %}{% endblock %}
+      </section>
+    </main>
+    <script src="{{ url_for('static', filename='reaperx.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

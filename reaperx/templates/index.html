@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block heading %}Dashboard{% endblock %}
+{% block heading_meta %}Pick a module to start an investigation{% endblock %}
+
+{% block content %}
+<div class="hero">
+  <div class="hero-card">
+    <h2>Welcome, investigator.</h2>
+    <p>
+      ReaperX is a focused OSINT toolkit. It surfaces only <em>publicly available</em>
+      information &mdash; no logins, no exploits, no credential harvesting.
+      Each module below targets a different pivot point.
+    </p>
+  </div>
+</div>
+
+<div class="grid">
+  {% for key, m in modules.items() %}
+    <a href="{{ url_for('module_page', key=key) }}" class="card">
+      <div class="card-icon">{{ m.title[0] }}</div>
+      <div class="card-body">
+        <h3>{{ m.title }}</h3>
+        <p>{{ m.blurb }}</p>
+      </div>
+      <div class="card-arrow">&rarr;</div>
+    </a>
+  {% endfor %}
+</div>
+{% endblock %}
