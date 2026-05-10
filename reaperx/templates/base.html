@@ -6,23 +6,39 @@
     <title>{% block title %}ReaperX - OSINT toolkit{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='52' font-size='52'>%F0%9F%92%80</text></svg>" />
+    <meta name="theme-color" content="#0a0b0f" />
   </head>
   <body>
-    <aside class="sidebar">
+    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">&#9776;</button>
+    <aside class="sidebar" id="sidebar">
       <a href="{{ url_for('index') }}" class="brand">
-        <span class="brand-mark">RX</span>
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="22" height="22" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 3l3 6 6 1-4 5 1 7-6-3-6 3 1-7-4-5 6-1z" />
+          </svg>
+        </span>
         <span class="brand-text">
           <strong>ReaperX</strong>
-          <small>v{{ app_version }}</small>
+          <small>v{{ app_version }} · OSINT toolkit</small>
         </span>
       </a>
+      <div class="sidebar-search">
+        <input type="search" id="module-filter" placeholder="Filter modules…" autocomplete="off" />
+      </div>
       <nav class="modules-nav">
-        {% for key, m in modules.items() %}
-          <a href="{{ url_for('module_page', key=key) }}"
-             class="module-link {% if request.view_args and request.view_args.get('key') == key %}active{% endif %}">
-            <span class="dot"></span>
-            <span>{{ m.title }}</span>
-          </a>
+        {% for group in module_groups %}
+          <div class="nav-group" data-category="{{ group.name }}">
+            <div class="nav-group-title">{{ group.name }}</div>
+            {% for m in group.modules %}
+              <a href="{{ url_for('module_page', key=m.key) }}"
+                 data-module-name="{{ m.title|lower }}"
+                 class="module-link {% if request.view_args and request.view_args.get('key') == m.key %}active{% endif %}">
+                <span class="dot"></span>
+                <span class="module-link-label">{{ m.title }}</span>
+              </a>
+            {% endfor %}
+          </div>
         {% endfor %}
       </nav>
       <footer class="sidebar-footer">
@@ -33,8 +49,13 @@
     </aside>
     <main class="main">
       <header class="topbar">
-        <h1 class="topbar-title">{% block heading %}{% endblock %}</h1>
-        <div class="topbar-meta">{% block heading_meta %}{% endblock %}</div>
+        <div>
+          <h1 class="topbar-title">{% block heading %}{% endblock %}</h1>
+          <p class="topbar-subtitle">{% block heading_meta %}{% endblock %}</p>
+        </div>
+        <div class="topbar-meta">
+          <span class="kbd">{{ modules|length }} modules</span>
+        </div>
       </header>
       <section class="content">
         {% block content %}{% endblock %}

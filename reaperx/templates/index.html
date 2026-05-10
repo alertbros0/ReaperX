@@ -1,29 +1,61 @@
 {% extends "base.html" %}
 {% block heading %}Dashboard{% endblock %}
-{% block heading_meta %}Pick a module to start an investigation{% endblock %}
+{% block heading_meta %}Pick a module to start an investigation.{% endblock %}
 
 {% block content %}
 <div class="hero">
   <div class="hero-card">
-    <h2>Welcome, investigator.</h2>
-    <p>
-      ReaperX is a focused OSINT toolkit. It surfaces only <em>publicly available</em>
-      information &mdash; no logins, no exploits, no credential harvesting.
-      Each module below targets a different pivot point.
-    </p>
+    <div class="hero-text">
+      <span class="hero-eyebrow">v{{ app_version }} · publicly-sourced intelligence only</span>
+      <h2>Welcome, investigator.</h2>
+      <p>
+        ReaperX surfaces only <em>publicly available</em> information — no logins,
+        no exploits, no credential harvesting. {{ modules|length }} modules across
+        {{ module_groups|length }} categories let you pivot from a username to
+        accounts, from a domain to certificates, from an IP to geolocation, and
+        from any handle to a curated set of search-engine dorks.
+      </p>
+      <div class="hero-stats">
+        <div><strong>{{ modules|length }}</strong><span>modules</span></div>
+        <div><strong>{{ module_groups|length }}</strong><span>categories</span></div>
+        <div><strong>60+</strong><span>username sites</span></div>
+        <div><strong>0</strong><span>API keys required</span></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="grid">
-  {% for key, m in modules.items() %}
-    <a href="{{ url_for('module_page', key=key) }}" class="card">
-      <div class="card-icon">{{ m.title[0] }}</div>
-      <div class="card-body">
-        <h3>{{ m.title }}</h3>
-        <p>{{ m.blurb }}</p>
-      </div>
-      <div class="card-arrow">&rarr;</div>
-    </a>
-  {% endfor %}
+<div class="dashboard-toolbar">
+  <input type="search" id="dashboard-filter" class="dash-search" placeholder="Search modules by name or description…" autocomplete="off" />
+  <div class="chip-row">
+    <button type="button" class="chip active" data-filter="all">All</button>
+    {% for group in module_groups %}
+      <button type="button" class="chip" data-filter="{{ group.name }}">{{ group.name }}</button>
+    {% endfor %}
+  </div>
 </div>
+
+{% for group in module_groups %}
+  <div class="module-section" data-category="{{ group.name }}">
+    <h3 class="section-heading">{{ group.name }}</h3>
+    <div class="grid">
+      {% for m in group.modules %}
+        <a href="{{ url_for('module_page', key=m.key) }}"
+           class="card"
+           data-card-name="{{ m.title|lower }}"
+           data-card-blurb="{{ m.blurb|lower }}"
+           data-card-category="{{ group.name }}">
+          <div class="card-icon">{{ m.icon }}</div>
+          <div class="card-body">
+            <h3>{{ m.title }}</h3>
+            <p>{{ m.blurb }}</p>
+          </div>
+          <div class="card-arrow">&rarr;</div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+
+<p id="dashboard-empty" class="muted dashboard-empty hidden">No modules match that filter.</p>
 {% endblock %}

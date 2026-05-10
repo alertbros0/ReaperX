@@ -22,7 +22,7 @@
   </label>
   {% if key == 'phone' %}
     <label class="field small">
-      <span>Default region (optional)</span>
+      <span>Default region</span>
       <input type="text" name="region" maxlength="2" placeholder="US" />
     </label>
   {% endif %}
@@ -32,20 +32,28 @@
       <input type="number" name="port" value="443" min="1" max="65535" />
     </label>
   {% endif %}
-  <button type="submit" class="btn-primary">Run</button>
+  <button type="submit" class="btn-primary">
+    <span class="btn-label">Run</span>
+  </button>
 </form>
 
 <div id="module-result" class="result hidden">
   <div class="result-toolbar">
     <span class="status-badge" id="status-badge">idle</span>
+    <span class="muted result-elapsed" id="result-elapsed"></span>
+    <span class="grow"></span>
     <button type="button" id="copy-json" class="btn-ghost">Copy JSON</button>
     <button type="button" id="download-json" class="btn-ghost">Download .json</button>
+    <button type="button" id="download-csv" class="btn-ghost">Download .csv</button>
+    <button type="button" id="toggle-raw" class="btn-ghost">Show raw</button>
+  </div>
+  <div id="result-skeleton" class="skeleton hidden">
+    <div class="sk-row"></div>
+    <div class="sk-row"></div>
+    <div class="sk-row sk-short"></div>
   </div>
   <div id="result-pretty" class="result-pretty"></div>
-  <details class="raw-json">
-    <summary>Raw JSON</summary>
-    <pre id="result-raw"></pre>
-  </details>
+  <pre id="result-raw" class="result-raw hidden"></pre>
 </div>
 {% endblock %}
 
